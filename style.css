@@ -263,7 +263,7 @@
 .start-page .hud-panel {
   position: absolute;
   left: 16%;                /* 改用百分比 */
-  bottom: 5%;              /* 改用百分比 */
+  bottom: 6%;              /* 改用百分比 */
 
   width: clamp(866px, 46vw, 920px); /* 比原本更穩的範圍 */
   padding: 14px 40px;
@@ -470,4 +470,5 @@
   }
 
 }
+
 

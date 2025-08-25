@@ -238,7 +238,7 @@
 /* 大圖（避免被裁切，寬度自適應） */
 .start-illust {
   position: absolute;
-  top: -20%;                  /* 起始頁預設值 */
+  top: -8%;                  /* 起始頁預設值 */
   left: 50%;
   transform: translateX(-50%);
   width: clamp(720px, 80vw, 1200px);
@@ -473,4 +473,5 @@
   .dist-row {
     gap: clamp(8px, 1.2vw, 12px);
   }
+
 }

@@ -1,30 +1,132 @@
-.block {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 580px;   /* 作答區大小 */
-  height: auto;
-  cursor: pointer;
+/* ==========================================================================
+   地方行政區域宅配遊戲 - 全局樣式與遊戲圖板 (Playmat) 系統
+   ========================================================================== */
+
+/* 引入 Google 遊戲感英文字型與精緻中文字型 */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Outfit:wght@400;600;800&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+  background: #1e272e url("picture/background.png") no-repeat center center;
+  background-size: cover;
+  overflow: hidden;
+  font-family: 'Noto Sans TC', sans-serif;
+  user-select: none;
 }
 
-.block img {
-  width: 100%;   /* 讓圖片撐滿區塊 */
+/* 滿版遊戲視窗容器：確保背景圖永遠鋪滿，即使有黑邊也維持背景 */
+#game-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* 核心遊戲板 (Game Board / Playmat)：標準 1440 x 900 坐標系 */
+#game-board {
+  position: absolute;
+  width: 1440px;
+  height: 900px;
+  transform-origin: center center;
+  overflow: hidden;
+  pointer-events: auto;
+  z-index: 10;
+}
+
+/* ==========================================================================
+   HUD 資訊框 (Time & Score) - 對稱排版
+   ========================================================================== */
+.info {
+  position: absolute;
+  top: 35px;
+  width: 350px;
+  height: auto;
+  filter: drop-shadow(0 6px 12px rgba(0,0,0,0.15));
+  transition: all 0.3s ease;
+}
+
+#time {
+  left: 50px;
+}
+
+#score {
+  right: 50px;
+}
+
+.info > img {
+  width: 100%;
   height: auto;
   display: block;
 }
 
-/* 讓最後幾個字不換行用 */
-.no-break { white-space: nowrap; }
+.info .label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 45px 0 35px;
+  white-space: nowrap;
+  font-family: 'Outfit', 'Noto Sans TC', sans-serif;
+  font-size: 34px;
+  font-weight: 700;
+  color: #1e272e;
+  pointer-events: none;
+}
 
-/* 外層：負責定位與置中，不旋轉 */
+.info .label .text-right {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: 38px;
+  color: #ff4757; /* 時間/分數數值顯眼色 */
+  text-shadow: 1px 1px 0px #fff;
+}
+
+#scoreValue {
+  color: #ffa502; /* 分數數值用星星金黃色 */
+}
+
+/* ==========================================================================
+   作答區卡片 (.block) - 1440x900 精準對稱定位
+   ========================================================================== */
+.block {
+  position: absolute;
+  top: 150px;
+  width: 580px;
+  height: 480px; /* 給予足夠高度包容按鈕 */
+  cursor: default;
+}
+
+#block1 {
+  left: 50px;
+}
+
+#block2 {
+  right: 50px;
+}
+
+.block img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.12));
+}
+
+/* 門市與地址文字區 */
 #block1 .block-slot,
 #block2 .block-slot {
   position: absolute;
-  top: 22%;
-  left: 32%;
-  width: 55%;
-  height: 110px;
-  padding-right: 20px;
+  top: 100px;
+  left: 185px;
+  width: 335px;
+  height: 125px;
+  padding-right: 10px;
 
   display: flex;
   align-items: center;
@@ -35,359 +137,421 @@
   line-height: 1.4;
   white-space: normal;
   word-break: break-word;
-  z-index: 1;
+  z-index: 5;
 }
 
-/* 內層：只負責文字與旋轉 */
+/* 內層：地址文字與斜度 */
 #block1 .block-text,
 #block2 .block-text {
   display: block;
   transform: rotate(-2deg);
-  transform-origin: center;
-  font-size: 28px;
-  font-weight: 350;
-  color: #000;
+  transform-origin: left center;
+  font-size: 26px;
+  font-weight: 700;
+  color: #2f3542;
+  line-height: 1.5;
 }
 
-/* 副文字（縣市 / 鄉鎮市區） */
-#block1 .block-subtext {
+/* 地址尾字不折行 */
+.no-break {
+  white-space: nowrap;
+}
+
+/* 副文字（縣市 / 鄉鎮市區 提示字） */
+#block1 .block-subtext,
+#block2 .block-subtext {
   position: absolute;
-  top: 185%;
-  left: -35%;
-  width: 60%;
   font-size: 28px;
-  font-weight: 400;
-  color: #000;
-  line-height: 2;
-  text-align: center;   /* 置中 */
+  font-weight: 900;
+  color: #2f3542;
+  background: transparent;
+  padding: 4px 0;
+  border: none;
+  text-align: center;
+  width: 140px;
+  box-shadow: none;
+  text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.8);
+}
+
+/* 調整左邊卡片與右邊卡片的提示字位置，完美契合背景框 */
+#block1 .block-subtext {
+  left: 30px;
+  top: 305px;
 }
 
 #block2 .block-subtext {
-  position: absolute;
-  top: 185%;
-  left: -55%;
-  width: 60%;
-  font-size: 28px;
-  font-weight: 400;
-  color: #000;
-  line-height: 2;
-  text-align: center;   /* 置中 */
+  left: 30px;
+  top: 305px;
 }
 
-/* ========= 按鈕覆蓋層（不影響文字排版） ========= */
-#block1 .ui-overlay,
-#block2 .ui-overlay {
+/* 第二行（區鄉鎮）提示字 */
+.dist-label-offset {
+  top: 375px !important;
+}
+
+/* ==========================================================================
+   按鈕覆蓋層與按鈕樣式
+   ========================================================================== */
+.ui-overlay {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: 2; /* 蓋過文字層 */
+  z-index: 10;
 }
 
 .btn-row {
   position: absolute;
-  left: var(--x, 0);
-  top:  var(--y, 0);
   display: flex;
-  gap: 10px;            /* 基本間距 */
-  pointer-events: auto; /* 允許點擊 */
+  gap: 12px;
+  pointer-events: auto;
 }
 
-.dist-row { gap: 20px; } /* 鄉鎮市區那排：間距更大 */
+/* 調整左右卡片的按鈕定位，使其跟提示字完美橫向對齊 */
+#block1 .city-row, 
+#block1 .dist-row,
+#block2 .city-row,
+#block2 .dist-row {
+  left: 200px;
+}
 
-/* ========= 白色系・日系手遊風格按鈕 ========= */
+.city-row {
+  top: 303px;
+  gap: 24px;
+}
+
+.dist-row {
+  top: 373px;
+  gap: 18px;
+}
+
+/* 精緻的日系手遊風立體按鈕 */
 .gbtn {
-  background: linear-gradient(180deg, #ffffff, #f2f3f5);
-  border: 2px solid #cfd3da;
-  border-radius: 14px;
-  padding: 6px 16px;
-  min-width: 86px;        /* 三字基準寬度，讓「直轄市」「省轄市」橫排 */
-  white-space: nowrap;    /* 禁止自動換行 */
+  background: linear-gradient(180deg, #ffffff 0%, #f1f2f6 100%);
+  border: 2px solid #ced6e0;
+  border-radius: 12px;
+  padding: 8px 14px;
+  min-width: 90px;
+  white-space: nowrap;
   text-align: center;
-
-  font-size: 20px;
-  font-weight: 600;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 19px;
+  font-weight: 700;
   color: #2f3542;
-  box-shadow: 0 3px 0 #c6cbd3, 0 6px 12px rgba(0,0,0,.10);
+  box-shadow: 0 4px 0 #a4b0be, 0 6px 12px rgba(0,0,0,0.1);
   cursor: pointer;
-  transition: transform .12s ease, box-shadow .12s ease, background .12s ease, border-color .12s ease;
+  transition: all 0.1s ease;
   user-select: none;
 }
 
 .gbtn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 5px 0 #c6cbd3, 0 12px 18px rgba(0,0,0,.14);
+  box-shadow: 0 6px 0 #a4b0be, 0 10px 16px rgba(0,0,0,0.12);
+  background: linear-gradient(180deg, #ffffff 0%, #e4e7eb 100%);
 }
 
 .gbtn:active {
-  transform: translateY(2px);
-  box-shadow: 0 1px 0 #c6cbd3, 0 6px 10px rgba(0,0,0,.12);
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #a4b0be, 0 3px 6px rgba(0,0,0,0.1);
 }
 
-/* 焦點可見性（鍵盤操作可見） */
 .gbtn:focus-visible {
-  outline: 3px solid #9ec5ff;  /* 淺藍 */
+  outline: 3px solid #70a1ff;
   outline-offset: 2px;
 }
 
-/* 小按鈕（縣、鄉、鎮、市、區）—更窄，高度不變 */
+/* 較窄的小按鈕 (縣、鄉、鎮、市、區) */
 .gbtn.gbtn-small {
   min-width: 58px;
-  padding: 6px 12px;
+  padding: 8px 10px;
 }
 
-/* 選取狀態（點擊後） */
+/* 按鈕點選後的 active 啟動狀態 (原版微調淺色版) */
 .gbtn.is-active {
-  background: linear-gradient(180deg, #e9f3ff, #d9ebff); /* 淺藍 */
-  border-color: #88b6ff;
-  color: #1f3b73;
-  box-shadow: 0 3px 0 #80aef7, 0 10px 18px rgba(31,59,115,.20);
+  background: linear-gradient(180deg, #edf7ff 0%, #85b9ff 100%) !important;
+  border-color: #7070ff;
+  color: #1e272e;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.6);
+  box-shadow: 0 4px 0 #5c5be5, 0 6px 12px rgba(92, 91, 229, 0.25) !important;
 }
 
-/* 簡易判題高亮（1 秒）：ok / ng */
-.gbtn.ok {
-  background: linear-gradient(180deg, #e6ffec, #d4f7dc);
-  border-color: #4ccd74;
-  color: #135b2b;
-}
-.gbtn.ng {
-  background: linear-gradient(180deg, #ffecec, #ffdada);
-  border-color: #ff8b8b;
-  color: #7a1b1b;
+.gbtn.is-active:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 #5c5be5, 0 10px 16px rgba(92, 91, 229, 0.35) !important;
 }
 
-/* ========= 卡車可/不可點的視覺狀態 ========= */
+.gbtn.is-active:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #5c5be5, 0 3px 6px rgba(92, 91, 229, 0.15) !important;
+}
+
+/* ==========================================================================
+   答案判定高亮與回饋
+   ========================================================================== */
+
+/* 答對的正確答案亮綠燈 (當玩家選對，或選錯時提示正確答案) */
+.gbtn.correct-hint {
+  background: linear-gradient(180deg, #f0fbf4 0%, #7bed9f 100%) !important;
+  color: #1e6035 !important;
+  border-color: #4bd879 !important;
+  text-shadow: 0 1px 1px rgba(255,255,255,0.6) !important;
+  box-shadow: 0 4px 0 #209451, 0 4px 10px rgba(46,213,115,0.2) !important;
+}
+
+/* 玩家選錯的按鈕亮紅燈 */
+.gbtn.error-choice {
+  background: linear-gradient(180deg, #fff3f4 0%, #ff6b81 100%) !important;
+  color: #7b2128 !important;
+  border-color: #eb4d5c !important;
+  text-shadow: 0 1px 1px rgba(255,255,255,0.6) !important;
+  box-shadow: 0 4px 0 #b32d38, 0 4px 10px rgba(255,71,87,0.2) !important;
+}
+
+/* ==========================================================================
+   底部角色與宅配卡車
+   ========================================================================== */
+.character {
+  position: absolute;
+  bottom: 50px;
+  width: 190px;
+  height: auto;
+  filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15));
+  z-index: 100;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#boy1, #boy3 {
+  left: 80px;
+}
+
+#girl1, #girl3 {
+  right: 80px;
+}
+
+#truck {
+  position: absolute;
+  bottom: 75px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 230px;
+  height: auto;
+  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
+  z-index: 110;
+  transition: all 0.3s ease;
+}
+
+/* 卡車禁用狀態（不可出貨） */
 #truck.disabled {
-  opacity: .70;
-  filter: grayscale(30%);
+  opacity: 0.65;
+  filter: grayscale(40%) drop-shadow(0 4px 8px rgba(0,0,0,0.15));
   pointer-events: none;
   cursor: not-allowed;
 }
+
 #truck:not(.disabled) {
   cursor: pointer;
-  opacity: 1;
-  filter: none;
+  opacity: 0.55;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.4));
+  transition: opacity 0.25s ease, transform 0.25s ease, filter 0.25s ease;
 }
 
-/* ========= 上方資訊框（time / score） ========= */
-.info { position: absolute; }
+#truck:not(.disabled):hover {
+  opacity: 1 !important;
+  transform: translateX(-50%) translateY(-5px) scale(1.03);
+  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.8)) drop-shadow(0 10px 25px rgba(0,0,0,0.25));
+}
 
-.info img {
+#truck:not(.disabled):active {
+  transform: translateX(-50%) translateY(3px) scale(0.97);
+}
+
+/* ==========================================================================
+   動畫 Keyframes (Micro-interactions)
+   ========================================================================== */
+
+/* 1. 卡車怠速引擎抖動與白色呼吸引導光 (四個答案都選好時觸發) */
+@keyframes truck-idle {
+  0% {
+    transform: translateX(-50%) translateY(0) scale(1);
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.4)) drop-shadow(0 10px 20px rgba(0,0,0,0.25));
+  }
+  25% {
+    transform: translateX(-50%) translateY(-3px) scale(1.01) skewX(-0.5deg);
+  }
+  50% {
+    transform: translateX(-50%) translateY(0) scale(1);
+    filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.95)) drop-shadow(0 15px 30px rgba(255, 255, 255, 0.4));
+  }
+  75% {
+    transform: translateX(-50%) translateY(-2px) scale(1.005) skewX(0.5deg);
+  }
+  100% {
+    transform: translateX(-50%) translateY(0) scale(1);
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.4)) drop-shadow(0 10px 20px rgba(0,0,0,0.25));
+  }
+}
+.truck-ready {
+  animation: truck-idle 0.6s ease-in-out infinite; /* 調小頻率讓呼吸抖動更平緩流暢 */
+}
+
+/* 2. 答對時卡車急速駛離 */
+@keyframes truck-drive-away {
+  0% { transform: translateX(-50%) translateY(0) scale(1); }
+  15% { transform: translateX(-55%) translateY(4px) scale(0.98) rotate(-2deg); }
+  35% { transform: translateX(-42%) translateY(-8px) scale(1.04) rotate(3deg); }
+  100% { transform: translateX(800px) translateY(-5px) scale(1.08); opacity: 0; }
+}
+.truck-drive-out {
+  animation: truck-drive-away 0.9s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+}
+
+/* 3. 新題目載入時卡車從左邊開回 */
+@keyframes truck-drive-in {
+  0% { transform: translateX(-800px) translateY(0) scale(1.05); opacity: 0; }
+  70% { transform: translateX(-48%) translateY(-4px) scale(0.99) rotate(2deg); opacity: 1; }
+  85% { transform: translateX(-52%) translateY(2px) scale(1.01) rotate(-1deg); }
+  100% { transform: translateX(-50%) translateY(0) scale(1) rotate(0deg); }
+}
+.truck-drive-return {
+  animation: truck-drive-in 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards !important;
+}
+
+/* 4. 答錯時卡車原地打滑抖動 */
+@keyframes truck-skidding {
+  0% { transform: translateX(-50%) rotate(0); }
+  15% { transform: translateX(-58%) rotate(-4deg); }
+  30% { transform: translateX(-42%) rotate(4deg); }
+  45% { transform: translateX(-55%) rotate(-3deg); }
+  60% { transform: translateX(-45%) rotate(3deg); }
+  75% { transform: translateX(-52%) rotate(-1.5deg); }
+  90% { transform: translateX(-48%) rotate(1.5deg); }
+  100% { transform: translateX(-50%) rotate(0); }
+}
+.truck-skid {
+  animation: truck-skidding 0.6s ease-in-out forwards;
+}
+
+/* 5. 答錯時卡片震動 */
+@keyframes block-shake {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-5px, 0); }
+  40% { transform: translate(5px, 0); }
+  60% { transform: translate(-3px, 0); }
+  80% { transform: translate(3px, 0); }
+  100% { transform: translate(0, 0); }
+}
+.shake-effect {
+  animation: block-shake 0.3s ease-in-out;
+}
+
+/* 隱藏元素 */
+.hidden {
+  display: none !important;
+}
+
+/* ==========================================================================
+   起始頁 & 結局頁排版美化 (1440x900 坐標系內)
+   ========================================================================== */
+.start-page {
+  background: #1e272e url("picture/background.png") no-repeat center center;
+  background-size: cover;
+}
+
+/* 起始與結局包裝器 */
+.start-wrap {
+  position: relative;
   width: 100%;
-  height: auto;
-  display: block; /* 移除 img 預設的下方空隙 */
+  height: 100%;
 }
 
-.info .label {
+/* 實體桌遊風大原畫底圖 (縮小置中卡牌化，無白框，無陰影，置中偏上且放大) */
+.bg-image {
   position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;  /* 左右分開固定 */
-  padding: 0 60px 0 40px;
-  white-space: nowrap;
-  font-size: 36px;
-  font-weight: 700;
-  color: #000;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1360px;
+  height: 740px;
+  object-fit: cover;
+  border-radius: 0; /* 取消圓角 */
+  box-shadow: none !important; /* 取消柔和陰影 */
+  filter: none !important; /* 確保無濾鏡陰影 */
+  z-index: 0;
   pointer-events: none;
 }
 
-/* ✅ 時間到要把東西隱藏用 */
-.hidden { display: none !important; }
-
-/* ===== 起始頁 Start Screen ===== */
-
-/* 只在起始頁套用背景與置中版面 */
-.start-page {
-  margin: 0;
-  min-height: 100svh;
-  height: 100dvh;
-  width: 100vw;
-  background: url("picture/background.png") no-repeat center center;
-  background-size: cover;
-  overflow: hidden;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center; /* 文字先置中，由區塊再覆蓋置左 */
-  padding: 20px;
-}
-
-.start-wrap {
-  position: relative;
-  height: 100%;
-  width: 100%;
-}
-
-/* 大圖（避免被裁切，寬度自適應） */
-.start-illust {
+/* 點擊任意處引導字眼 (字體加大，位置往上) */
+.start-prompt {
   position: absolute;
-  top: -1vh;                  /* 以動態視窗高，避免瀏覽器UI變動造成飄移 */
+  bottom: 95px; /* 往上移，貼近底圖下邊緣之外 */
   left: 50%;
   transform: translateX(-50%);
-  width: clamp(680px, 76vw, 1080px);
-  height: auto;
-  user-select: none;
-  z-index: 1;                /* 圖層最底 */
+  z-index: 10;
+  
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 36px; /* 字體再加大 */
+  font-weight: 900;
+  letter-spacing: 4px;
+  color: #ffffff; /* 純白色字體，明度對比度最高 */
+  /* 強烈的重黑陰影描邊，保證在任何雜色木紋背景上均無比醒目 */
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95), 0 4px 20px rgba(0, 0, 0, 0.8), 0 0 2px rgba(0, 0, 0, 1);
+  
+  pointer-events: none;
+  animation: prompt-blink 2s ease-in-out infinite;
+  transition: opacity 0.3s ease;
 }
 
-/* 說明文字 */
-.game-desc {
-  margin: 0;
-  font-size: clamp(16px, 2.0vw, 22px);
-  line-height: 1.7;
-  color: #222;
-  text-shadow: none;
-  text-align: left;
+@keyframes prompt-blink {
+  0%, 100% { opacity: 0.4; transform: translateX(-50%) scale(0.98); }
+  50% { opacity: 1; transform: translateX(-50%) scale(1.02); }
 }
 
-/* === HUD：基準（桌機/大螢幕） ===
-   ❶ 不同於小螢幕，桌機不寫 right，讓 clamp 控寬
-*/
-.start-page .hud-panel {
+/* 半透明手遊風介紹說明框 */
+.hud-panel {
   position: absolute;
-  left: 18.5vw;
-  bottom: 8dvh;
-
-  width: clamp(820px, 44vw, 900px); /* 略微縮小，提升跨裝置穩定性 */
-  padding: 14px 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 120px;
+  width: 1000px;
+  padding: 0;
   box-sizing: border-box;
 
-  background: rgba(255, 255, 255, 0.82);
-  border: 2px solid rgba(207, 211, 218, 0.9);
-  border-radius: 18px;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 
-  text-align: left;
-  z-index: 5; /* 疊在大圖上方 */
+  text-align: center;
+  z-index: 5;
 }
 
-/* ==== 開始按鈕：基準（桌機） ==== */
-#startBtn.start-cta {
-  position: absolute;
-  bottom: 10dvh;
-  right: 18vw;
-
-  width: auto;
-  height: auto;
-  padding: 8px 16px;
-  background: none; /* 移除背景 */
-  border: none; /* 移除邊框 */
-  box-shadow: none; /* 移除陰影 */
-
-  font: 700 20px/1 'Arial', sans-serif;
-  color: #222; /* 與遊戲說明文字相同的顏色 */
-  letter-spacing: 1px;
-  text-transform: uppercase;
-
-  display: inline-block;
-  cursor: pointer; 
-  user-select: none;
-  transition: all 0.2s ease;
-  z-index: 10; /* 在框與圖之上 */
+.game-desc {
+  margin: 0;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1.8;
+  color: #1e272e; /* 黑色字體 */
+  /* 強烈的多層白色光暈與描邊，保證在任何背景插圖下皆能完美閱讀 */
+  text-shadow: 0 0 12px #ffffff, 0 0 6px #ffffff, 1px 1px 0px #ffffff, -1px -1px 0px #ffffff;
 }
 
-/* 移除光效，因為沒有背景 */
-
-/* hover/active/focus 效果 */
-@media (hover: hover) {
-  #startBtn.start-cta:hover {
-    color: #4a90e2; /* 懸停時變為藍色 */
-    transform: translateY(-1px); /* 輕微上移 */
-  }
-}
-#startBtn.start-cta:active {
-  transform: translateY(0);
-  color: #357abd; /* 點擊時變為深藍色 */
-}
-#startBtn.start-cta:focus-visible {
-  outline: 2px solid #4a90e2;
-  outline-offset: 4px;
-  border-radius: 4px;
+/* 打字機光標 */
+.typewriter-cursor::after {
+  content: ' |';
+  margin-left: 2px;
+  font-weight: 900;
+  color: #ff4757; /* 醒目的亮紅色光標 */
+  animation: cursor-blink 0.8s steps(2, start) infinite;
 }
 
-/* ==== 小螢幕（<=768px）覆蓋：用左右留白決定寬度 ==== */
-@media (max-width: 768px) {
-  .start-page .hud-panel {
-    left: 6vw; right: 6vw;   /* 寬度 = 100vw - 左右邊距 */
-    bottom: 12dvh;
-    width: auto;             /* 交給左右邊距決定，不用 clamp */
-    padding: 12px 30px;
-  }
-  #startBtn.start-cta {
-    right: 6vw; bottom: 12dvh;
-    padding: 6px 12px;
-    font-size: 18px;
-  }
+@keyframes cursor-blink {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
 }
 
-/* ==== 更小螢幕（<=480px）微調 ==== */
-@media (max-width: 480px) {
-  .start-page .hud-panel {
-    left: 4vw; right: 4vw;
-    bottom: 10dvh;
-    padding: 10px 25px;
-  }
-  #startBtn.start-cta {
-    right: 4vw; bottom: 10dvh;
-    padding: 5px 10px;
-    font-size: 16px;
-  }
-  .game-desc { font-size: 16px; line-height: 1.6; }
-}
-
-/* ===== 結局頁專屬微調（避免圖片遮擋與位移） ===== */
-.end-page .start-illust {
-  top: -1vh;
-  width: clamp(680px, 76vw, 1080px);
-}
-.end-page .hud-panel {
-  left: 18.5vw;
-  bottom: 8dvh;
-  width: clamp(820px, 44vw, 900px);
-}
-@media (max-width: 768px) {
-  .end-page .hud-panel { left: 6vw; right: 6vw; bottom: 12dvh; width: auto; }
-}
-@media (max-width: 480px) {
-  .end-page .hud-panel { left: 4vw; right: 4vw; bottom: 10dvh; }
-}
-
-/* ====== 新增優化樣式 ====== */
-
-@keyframes shake {
-  /* 注意：原本的 translateY(-50%) 必須保留，否則動畫時會失去垂直置中 */
-  0% { transform: translate(0, -50%); }
-  20% { transform: translate(-10px, -50%); }
-  40% { transform: translate(10px, -50%); }
-  60% { transform: translate(-10px, -50%); }
-  80% { transform: translate(10px, -50%); }
-  100% { transform: translate(0, -50%); }
-}
-
-.shake-effect {
-  animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
-}
-/* 正確答案的提示樣式 (當玩家選錯時，正確的按鈕會亮起) */
-.gbtn.correct-hint {
-  background: #4ccd74 !important;
-  color: white !important;
-  border-color: #2ea052 !important;
-  box-shadow: 0 0 10px #4ccd74;
-}
-
-/* 錯誤選擇的樣式 */
-.gbtn.error-choice {
-  background: #ff6b6b !important;
-  color: white !important;
-  border-color: #c92a2a !important;
-}
-
-/* 卡車點擊時的下壓效果 */
-#truck:active {
-  transform: translateX(-50%) scale(0.95);
-  transition: transform 0.1s;
+/* 結局頁微調 (不再覆蓋 top，使與開始頁位置完全一致) */
+.end-page .bg-image {
+  /* 繼承通用絕對定位 */
 }

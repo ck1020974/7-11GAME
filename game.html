@@ -2,65 +2,56 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <title>小遊戲</title>
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    /* 頁面背景與上方固定元素（恢復接近原本的全畫面背景） */
-    body {
-      margin: 0;
-      height: 100vh;
-      width: 100vw;
-      background: url("picture/background.png") no-repeat center center;
-      background-size: cover;
-      overflow: hidden;
-    }
-    #game { width: 100%; height: 100%; position: relative; }
-
-    /* 兩個上方資訊框的位置 */
-    .info { position: absolute; top: 2%; width: 350px; height: auto; }
-    #time { left: 4%; }
-    #score { right: 20%; }
-
-    .info > img { width: 100%; height: auto; display: block; }
-    .info .label {
-      position: absolute; inset: 0;
-      display: flex; align-items: center; justify-content: center;
-      white-space: nowrap; gap: 40px;
-      font-size: 36px; font-weight: 500; color: #000;
-      pointer-events: none; padding: 0 8px;
-    }
-
-    /* 左右兩個 block 的水平位置（維持你原本設定） */
-    #block1 { left: 3%; }
-    #block2 { right: 3%; }
-
-    /* 底部角色（維持你原本設定） */
-    .character { position: absolute; bottom: 2%; width: 180px; height: auto; }
-    #boy1, #boy3 { left: 0%; }
-    #truck { left: 50%; transform: translateX(-50%); }
-    #girl1, #girl3 { right: 0%; }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>行政區宅配大挑戰｜遊戲中</title>
+  <!-- 引入重製後的樣式表 -->
+  <link rel="stylesheet" href="style.css?v=3" />
 </head>
 
 <body>
-  <div id="game">
-    <!-- 左側作答區 -->
-    <div id="block1" class="block">
-      <img src="picture/block1.png" alt="Block 1" />
-      <div class="block-slot">
-        <div class="block-text" id="block1-text"></div>
-        <div class="block-subtext" id="block1-subtext"></div>
+  <!-- 滿版外容器 -->
+  <div id="game-container">
+    <!-- 1440x900 核心遊戲板 -->
+    <div id="game-board">
+      
+      <!-- 上方資訊框 HUD -->
+      <div id="time" class="info">
+        <img src="picture/time.png" alt="時間" />
+        <span class="label">
+          <span class="text-left">時間 ⌛</span>
+          <span class="text-right" id="timeValue">03:00</span>
+        </span>
+      </div>
 
-        <!-- 覆蓋層：放按鈕（不影響文字排版） -->
+      <div id="score" class="info">
+        <img src="picture/score.png" alt="分數" />
+        <span class="label">
+          <span class="text-left">分數 ⭐</span>
+          <span class="text-right" id="scoreValue">0</span>
+        </span>
+      </div>
+
+      <!-- 左側作答區 -->
+      <div id="block1" class="block">
+        <img src="picture/block1.png" alt="左出貨單" />
+        <div class="block-slot">
+          <div class="block-text" id="block1-text"></div>
+        </div>
+        
+        <!-- 拆分行政區提示字，以與右側按鈕高度精準對齊 -->
+        <div class="block-subtext" id="block1-city-label"></div>
+        <div class="block-subtext dist-label-offset" id="block1-dist-label"></div>
+
+        <!-- 按鈕覆蓋層 -->
         <div class="ui-overlay">
-          <!-- 縣市旁：直轄市 / 縣 / 省轄市（同組只能選一） -->
-          <div class="btn-row city-row" style="--x:12%; --y:185%;" role="group" aria-label="城市層級">
+          <!-- 縣市層級選擇 -->
+          <div class="btn-row city-row" role="group" aria-label="左城市層級">
             <button class="gbtn" aria-pressed="false">直轄市</button>
             <button class="gbtn gbtn-small" aria-pressed="false">縣</button>
             <button class="gbtn" aria-pressed="false">省轄市</button>
           </div>
-          <!-- 鄉鎮市區旁：鄉 / 鎮 / 市 / 區（同組只能選一） -->
-          <div class="btn-row dist-row" style="--x:12%; --y:240%;" role="group" aria-label="區鄉鎮層級">
+          <!-- 區鄉鎮層級選擇 -->
+          <div class="btn-row dist-row" role="group" aria-label="左區鄉鎮層級">
             <button class="gbtn gbtn-small" aria-pressed="false">鄉</button>
             <button class="gbtn gbtn-small" aria-pressed="false">鎮</button>
             <button class="gbtn gbtn-small" aria-pressed="false">市</button>
@@ -68,23 +59,25 @@
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- 右側作答區 -->
-    <div id="block2" class="block">
-      <img src="picture/block2.png" alt="Block 2" />
-      <div class="block-slot">
-        <div class="block-text" id="block2-text"></div>
-        <div class="block-subtext" id="block2-subtext"></div>
+      <!-- 右側作答區 -->
+      <div id="block2" class="block">
+        <img src="picture/block2.png" alt="右出貨單" />
+        <div class="block-slot">
+          <div class="block-text" id="block2-text"></div>
+        </div>
+        
+        <div class="block-subtext" id="block2-city-label"></div>
+        <div class="block-subtext dist-label-offset" id="block2-dist-label"></div>
 
-        <!-- 覆蓋層：放按鈕（不影響文字排版） -->
+        <!-- 按鈕覆蓋層 -->
         <div class="ui-overlay">
-          <div class="btn-row city-row" style="--x:-8%; --y:185%;" role="group" aria-label="城市層級">
+          <div class="btn-row city-row" role="group" aria-label="右城市層級">
             <button class="gbtn" aria-pressed="false">直轄市</button>
             <button class="gbtn gbtn-small" aria-pressed="false">縣</button>
             <button class="gbtn" aria-pressed="false">省轄市</button>
           </div>
-          <div class="btn-row dist-row" style="--x:-8%; --y:240%;" role="group" aria-label="區鄉鎮層級">
+          <div class="btn-row dist-row" role="group" aria-label="右區鄉鎮層級">
             <button class="gbtn gbtn-small" aria-pressed="false">鄉</button>
             <button class="gbtn gbtn-small" aria-pressed="false">鎮</button>
             <button class="gbtn gbtn-small" aria-pressed="false">市</button>
@@ -92,43 +85,50 @@
           </div>
         </div>
       </div>
+
+      <!-- 底部角色 NPC 與 宅配卡車 -->
+      <img id="boy1" class="character" src="picture/boy1.png" alt="助手男孩" />
+      <img id="boy3" class="character hidden" src="picture/boy3.png" alt="難過男孩" />
+
+      <img id="truck" class="character disabled" src="picture/truck.png" alt="出貨卡車" />
+
+      <img id="girl1" class="character" src="picture/girl1.png" alt="助手女孩" />
+      <img id="girl3" class="character hidden" src="picture/girl3.png" alt="難過女孩" />
+      
     </div>
-
-    <!-- 上方資訊框 -->
-    <div id="time" class="info">
-      <img src="picture/time.png" alt="Time" />
-      <span class="label">
-        <span class="text-left">時間 ⌛</span>
-        <span class="text-right" id="timeValue">05:00</span>
-      </span>
-    </div>
-
-    <div id="score" class="info">
-      <img src="picture/score.png" alt="Score" />
-      <span class="label">
-        <span class="text-left">分數 ⭐</span>
-        <span class="text-right" id="scoreValue">0</span>
-      </span>
-    </div>
-
-    <!-- 底部角色 -->
-    <img id="boy1" class="character" src="picture/boy1.png" alt="Boy 1" />
-    <img id="boy3" class="character hidden" src="picture/boy3.png" alt="Boy 3" />
-
-    <img id="truck" class="character" src="picture/truck.png" alt="Truck" />
-
-    <img id="girl1" class="character" src="picture/girl1.png" alt="Girl 1" />
-    <img id="girl3" class="character hidden" src="picture/girl3.png" alt="Girl 3" />
   </div>
 
+  <script src="seven_eleven.js"></script>
   <script>
-    // ====== 1. 城市與權重設定 ======
+    // ====== 1. 遊戲畫面動態縮放邏輯 ======
+    function resizeGame() {
+      const board = document.getElementById("game-board");
+      const targetW = 1440;
+      const targetH = 900;
+      const winW = window.innerWidth;
+      const winH = window.innerHeight;
+      
+      // 計算最適合比例，使整個遊戲板完整容納於視窗中，維持 16:10 比例
+      const scale = Math.min(winW / targetW, winH / targetH);
+      
+      // 設定 transform 置中縮放
+      board.style.transform = `translate(-50%, -50%) scale(${scale})`;
+      board.style.left = "50%";
+      board.style.top = "50%";
+      board.style.position = "absolute";
+    }
+
+    // 註冊視窗縮放監聽
+    window.addEventListener("resize", resizeGame);
+    window.addEventListener("DOMContentLoaded", resizeGame);
+
+    // ====== 2. 城市與行政區權重設定 ======
     // 六都 (直轄市)
     const SPECIAL_MUNIS = new Set(["臺北市", "新北市", "桃園市", "臺中市", "臺南市", "高雄市"]);
-    // 市 (舊稱省轄市)
+    // 市 (省轄市)
     const PROVINCIAL_CITIES = new Set(["基隆市", "新竹市", "嘉義市"]);
   
-    // 為了讓題目多樣化，給予離島或較少門市的縣市較高權重
+    // 門市分佈權重 (離島或偏遠縣市機率調高，增加多樣性)
     const CITY_WEIGHTS = {
       '新北市': 0.2, '臺北市': 0.2, '高雄市': 0.5, '臺中市': 0.5, '臺南市': 0.5, '桃園市': 0.5,
       '新竹市': 5, '基隆市': 5, '嘉義市': 5,
@@ -137,19 +137,19 @@
       '宜蘭縣': 2, '南投縣': 2, '苗栗縣': 2, '屏東縣': 2, '臺東縣': 2,
     };
   
-    // ====== 2. 狀態變數 ======
+    // ====== 3. 遊戲狀態變數 ======
     let currentScore = 0;
     let rec1 = null;
     let rec2 = null;
-    let isSubmitting = false; // 防止重複點擊鎖定
+    let isSubmitting = false; // 防止重複送出鎖定
     let dataset = null;
-    let timeLeft = 180; // 3分鐘
+    let timeLeft = 180; // 3分鐘 (180秒)
     let timerId = null;
     let timeOver = false;
   
-    // ====== 3. 工具函式 ======
+    // ====== 4. 隨機與文字處理工具 ======
     
-    // 權重隨機抽取
+    // 權重隨機抽取題目
     function weightedRandomPick(data) {
       let totalWeight = 0;
       const weights = data.map(rec => {
@@ -166,12 +166,10 @@
       return data[data.length - 1];
     }
   
-    // 字串處理：移除後綴 (例如：臺北市 -> 臺北)
+    // 移除行政單位後綴 (例如：臺北市 -> 臺北，阿里山鄉 -> 阿里山)
     function trimSuffix(text) {
       if (!text) return "";
       const suffixes = ["縣", "市", "鄉", "鎮", "區"];
-      // 處理像 "東區" -> "東"，但 "阿里山鄉" -> "阿里山"
-      // 簡單規則：移除最後一個字如果它是行政區單位
       const lastChar = text.slice(-1);
       if (suffixes.includes(lastChar)) {
         return text.slice(0, -1);
@@ -179,34 +177,34 @@
       return text;
     }
   
-    // 地址斷行處理
+    // 防止地址最後幾個字換行
     function keepLastTogether(text, n = 2) {
       if (!text || text.length <= n) return text;
       const h = text.slice(0, -n), t = text.slice(-n);
       return h + '<span class="no-break">' + t + '</span>';
     }
   
-    // 核心邏輯：判斷城市類型
+    // 判定城市層級類型
     function classifyCityType(name) {
       if (SPECIAL_MUNIS.has(name)) return "直轄市";
-      if (PROVINCIAL_CITIES.has(name)) return "省轄市"; // 雖然現在法律只稱"市"，但教學上通常區分
+      if (PROVINCIAL_CITIES.has(name)) return "省轄市";
       if (name.endsWith("縣")) return "縣";
       return "未知";
     }
   
-    // 核心邏輯：判斷行政區類型
+    // 判定區鄉鎮層級類型
     function classifyDistrictType(name) {
       const lastChar = name.slice(-1);
       if (["鄉", "鎮", "市", "區"].includes(lastChar)) return lastChar;
       return "未知";
     }
   
-    // ====== 4. UI 操作 ======
+    // ====== 5. UI 按鈕互動與狀態控制 ======
     const truckEl = document.getElementById("truck");
     const scoreEl = document.getElementById("scoreValue");
     const timeEl = document.getElementById("timeValue");
   
-    // 取得目前選中的答案文字
+    // 取得玩家當前點選的選項
     function getSelections() {
       const b1CityBtn = document.querySelector("#block1 .city-row .gbtn.is-active");
       const b1DistBtn = document.querySelector("#block1 .dist-row .gbtn.is-active");
@@ -221,24 +219,27 @@
       };
     }
   
-    // 檢查是否四題都選了
+    // 檢查四個選項是否皆已選取
     function allFourSelected() {
       const sel = getSelections();
       return sel.b1City && sel.b1Dist && sel.b2City && sel.b2Dist;
     }
   
-    // 更新卡車狀態 (視覺回饋)
+    // 更新宅配卡車的可點擊狀態與發動引擎效果
     function updateTruckInteractivity() {
       if (isSubmitting || timeOver) {
         truckEl.classList.add("disabled");
+        truckEl.classList.remove("truck-ready");
       } else if (allFourSelected()) {
         truckEl.classList.remove("disabled");
+        truckEl.classList.add("truck-ready"); // 開啟引擎怠速抖動動畫
       } else {
         truckEl.classList.add("disabled");
+        truckEl.classList.remove("truck-ready");
       }
     }
   
-    // 設定按鈕點擊事件
+    // 設定按鈕點擊互斥事件 (同排單選)
     function setupSingleSelectRow(row) {
       if (!row) return;
       row.addEventListener("click", (e) => {
@@ -246,19 +247,20 @@
         const btn = e.target.closest("button.gbtn");
         if (!btn) return;
   
-        // 同一排只能選一個
+        // 移除同排其他按鈕的選取狀態
         row.querySelectorAll("button.gbtn").forEach(b => {
           b.classList.remove("is-active");
           b.setAttribute("aria-pressed", "false");
         });
         
+        // 啟用當前按鈕
         btn.classList.add("is-active");
         btn.setAttribute("aria-pressed", "true");
         updateTruckInteractivity();
       });
     }
   
-    // 清除所有選擇與樣式
+    // 重置按鈕高亮與選取樣式
     function clearSelections() {
       document.querySelectorAll(".gbtn").forEach(b => {
         b.classList.remove("is-active", "ok", "ng", "correct-hint", "error-choice");
@@ -266,44 +268,42 @@
       });
     }
   
-    // 載入新題目
+    // 載入新回合題目
     function loadNewRound(data) {
       if (!data || data.length === 0) return;
       
       rec1 = weightedRandomPick(data);
       rec2 = weightedRandomPick(data);
   
-      // 防止兩題完全一樣 (雖然機率低)
+      // 確保兩側門市不重複
       while (rec1 === rec2) {
         rec2 = weightedRandomPick(data);
       }
   
-      // 渲染文字
+      // 渲染包裹門市與地址資訊
       document.getElementById("block1-text").innerHTML = `${rec1.門市名稱}：<br>${keepLastTogether(rec1.其餘地址, 2)}`;
       document.getElementById("block2-text").innerHTML = `${rec2.門市名稱}：<br>${keepLastTogether(rec2.其餘地址, 2)}`;
       
-      // 顯示提示用的行政區名稱 (去掉後綴讓學生判斷)
-      document.getElementById("block1-subtext").innerHTML = `${trimSuffix(rec1.縣市)}<br>${trimSuffix(rec1.鄉鎮市區)}`;
-      document.getElementById("block2-subtext").innerHTML = `${trimSuffix(rec2.縣市)}<br>${trimSuffix(rec2.鄉鎮市區)}`;
-
-      // ====== 重置人物顯示（依照你給的邏輯） ======
-      // 1. 隱藏答錯/答對後的特殊表情
+      // 渲染去後綴行政區提示字 (分拆為兩個標籤以防偏移)
+      document.getElementById("block1-city-label").textContent = trimSuffix(rec1.縣市);
+      document.getElementById("block1-dist-label").textContent = trimSuffix(rec1.鄉鎮市區);
+      document.getElementById("block2-city-label").textContent = trimSuffix(rec2.縣市);
+      document.getElementById("block2-dist-label").textContent = trimSuffix(rec2.鄉鎮市區);
+  
+      // 重置助手 NPC 表情
       document.getElementById("boy3").classList.add("hidden");
       document.getElementById("girl3").classList.add("hidden");
-      
-      // 2. 確保預設角色是顯示的
       document.getElementById("boy1").classList.remove("hidden");
       document.getElementById("girl1").classList.remove("hidden");
-      // =========================================
   
       clearSelections();
       isSubmitting = false;
       updateTruckInteractivity();
     }
   
-    // ====== 5. 判題邏輯與視覺回饋 ======
+    // ====== 6. 答案判定與視覺動畫回饋 ======
     
-    // 顯示該排的正確答案
+    // 對按鈕列渲染正確/錯誤高亮
     function showCorrectAnswer(rowSelector, correctText, userChoice) {
       const row = document.querySelector(rowSelector);
       const buttons = row.querySelectorAll(".gbtn");
@@ -311,26 +311,24 @@
       buttons.forEach(btn => {
         const text = btn.textContent.trim();
         if (text === correctText) {
-          // 這是正確答案，顯示綠色提示
-          btn.classList.add("correct-hint");
+          btn.classList.add("correct-hint"); // 正確答案亮綠燈
         }
         if (text === userChoice && userChoice !== correctText) {
-          // 這是玩家選錯的，顯示紅色
-          btn.classList.add("error-choice");
+          btn.classList.add("error-choice"); // 選錯按鈕亮紅燈
         }
       });
     }
   
-    // 卡車送出檢查
+    // 卡車出貨送出事件
     truckEl.addEventListener("click", () => {
       if (timeOver || isSubmitting || !allFourSelected()) return;
   
       isSubmitting = true;
-      updateTruckInteractivity();
+      updateTruckInteractivity(); // 鎖定操作
   
       const sels = getSelections();
       
-      // 標準答案
+      // 正確答案
       const ans1_City = classifyCityType(rec1.縣市);
       const ans1_Dist = classifyDistrictType(rec1.鄉鎮市區);
       const ans2_City = classifyCityType(rec2.縣市);
@@ -339,59 +337,82 @@
       let roundScore = 0;
       let isAllCorrect = true;
   
-      // 檢查 Block 1
+      // 計分與判定
       if (sels.b1City === ans1_City) roundScore += 5; else isAllCorrect = false;
       if (sels.b1Dist === ans1_Dist) roundScore += 5; else isAllCorrect = false;
-      
-      // 檢查 Block 2
       if (sels.b2City === ans2_City) roundScore += 5; else isAllCorrect = false;
       if (sels.b2Dist === ans2_Dist) roundScore += 5; else isAllCorrect = false;
   
       // 全對獎勵
       if (isAllCorrect) roundScore += 10;
   
-      // 更新分數
       currentScore += roundScore;
       scoreEl.textContent = currentScore;
   
-      // === 視覺回饋 ===
+      // === 視覺特效與動畫回饋 ===
       
-      // 1. 顯示所有正確答案 (教育意義：讓學生知道錯在哪)
+      // 1. 顯示正確答案提示
       showCorrectAnswer("#block1 .city-row", ans1_City, sels.b1City);
       showCorrectAnswer("#block1 .dist-row", ans1_Dist, sels.b1Dist);
       showCorrectAnswer("#block2 .city-row", ans2_City, sels.b2City);
       showCorrectAnswer("#block2 .dist-row", ans2_Dist, sels.b2Dist);
   
-      // 2. 人物表情
+      // 2. 移除卡車發動抖動
+      truckEl.classList.remove("truck-ready");
+  
+      // 3. 人物表情與卡車/卡片動畫
       if (isAllCorrect) {
-        // 全對：顯示預設開心表情，隱藏錯誤表情
+        // 全對：顯示開心的助手，卡車加速出貨開走
         document.getElementById("boy1").classList.remove("hidden");
         document.getElementById("girl1").classList.remove("hidden");
         document.getElementById("boy3").classList.add("hidden");
         document.getElementById("girl3").classList.add("hidden");
+        
+        truckEl.classList.add("truck-drive-out");
       } else {
-        // 有錯：隱藏預設表情，只顯示錯誤表情
+        // 答錯：顯示沮喪的助手，出貨卡片震動，卡車原地打滑
         document.getElementById("boy1").classList.add("hidden");
         document.getElementById("girl1").classList.add("hidden");
         document.getElementById("boy3").classList.remove("hidden");
         document.getElementById("girl3").classList.remove("hidden");
-        // 答錯時，整個區塊震動提示
+        
         document.getElementById("block1").classList.add("shake-effect");
         document.getElementById("block2").classList.add("shake-effect");
+        truckEl.classList.add("truck-skid");
       }
   
-      // 3. 延遲進入下一題 (給予時間看正確答案)
+      // 4. 載入新回合 (300ms) 與移除震動效果
       setTimeout(() => {
         document.getElementById("block1").classList.remove("shake-effect");
         document.getElementById("block2").classList.remove("shake-effect");
-        
         if (!timeOver) {
           loadNewRound(dataset);
         }
-      }, 1200); // 延長到 1.2 秒，讓學生有時間看正確答案
+      }, 300);
+  
+      // 5. 獨立處理卡車動畫的生命週期，不卡玩家點選按鈕的節奏
+      if (isAllCorrect) {
+        // 答對：卡車開走動畫播放 900ms 後結束，接著花 800ms 開回原位
+        setTimeout(() => {
+          truckEl.classList.remove("truck-drive-out");
+          if (!timeOver) {
+            truckEl.classList.add("truck-drive-return");
+            setTimeout(() => {
+              truckEl.classList.remove("truck-drive-return");
+              updateTruckInteractivity(); // 重新整理卡車就緒狀態
+            }, 800);
+          }
+        }, 900);
+      } else {
+        // 答錯：卡車打滑抖動動畫播放 600ms 後結束恢復
+        setTimeout(() => {
+          truckEl.classList.remove("truck-skid");
+          updateTruckInteractivity();
+        }, 600);
+      }
     });
   
-    // ====== 6. 計時與遊戲流程 ======
+    // ====== 7. 計時器與結束遊戲流程 ======
     
     function formatTime(s) {
       const m = Math.floor(s / 60);
@@ -417,44 +438,41 @@
       clearInterval(timerId);
       timeEl.textContent = "00:00";
       
-      // 隱藏遊戲介面元素
+      // 隱藏遊戲核心面板
       const uiElements = ['#block1', '#block2', '#boy1', '#boy3', '#girl1', '#girl3', '#truck'];
       uiElements.forEach(sel => {
           const el = document.querySelector(sel);
           if(el) el.style.display = 'none';
       });
   
-      // 判斷結局
+      // 根據得分決定結局等級
       let ending = "end5";
       if (currentScore >= 600) ending = "end1";
       else if (currentScore >= 420) ending = "end2";
       else if (currentScore >= 300) ending = "end3";
       else if (currentScore >= 180) ending = "end4";
   
-      // 跳轉
+      // 跳轉結局頁
       setTimeout(() => {
         window.location.href = `end.html?e=${ending}`;
       }, 500);
     }
   
-    // ====== 7. 初始化 ======
+    // ====== 8. 遊戲載入初始化 ======
     document.addEventListener("DOMContentLoaded", () => {
-      // 綁定按鈕點擊事件
+      // 綁定按鈕點擊互斥事件
       document.querySelectorAll(".city-row, .dist-row").forEach(setupSingleSelectRow);
       scoreEl.textContent = currentScore;
   
-      // 載入資料
-      fetch("seven_eleven.json")
-        .then(r => r.json())
-        .then(data => {
-          dataset = data;
-          loadNewRound(dataset);
-          startTimer();
-        })
-        .catch(err => {
-          console.error("資料載入失敗", err);
-          alert("遊戲資料載入失敗，請檢查連線或檔案。");
-        });
+      // 載入 JS 資料 (避免直接開 HTML 時遇到 CORS 問題)
+      if (typeof SEVEN_ELEVEN_DATA !== 'undefined') {
+        dataset = SEVEN_ELEVEN_DATA;
+        loadNewRound(dataset);
+        startTimer();
+      } else {
+        console.error("宅配資料載入失敗");
+        alert("宅配資料載入失敗，請檢查資料檔 seven_eleven.js 是否存在且語法正確。");
+      }
     });
   </script>
 </body>

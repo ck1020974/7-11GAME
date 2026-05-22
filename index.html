@@ -2,47 +2,105 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <title>小遊戲｜起始頁</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>行政區宅配大挑戰｜起始頁</title>
+  <link rel="stylesheet" href="style.css?v=3" />
 </head>
+
 <body class="start-page">
-  <main class="start-wrap" role="main" aria-label="起始頁">
-    <!-- 大插圖 -->
-    <img class="start-illust" src="picture/start.png" alt="遊戲插圖" />
+  <!-- 滿版外容器 -->
+  <div id="game-container">
+    <!-- 1440x900 核心遊戲板 -->
+    <div id="game-board" class="start-wrap" role="main" aria-label="起始頁">
+      
+      <!-- 滿版大原畫底圖 -->
+      <img class="bg-image" src="picture/start.png" alt="遊戲背景插圖" />
 
-    <!-- 半透明手遊風介紹框 -->
-    <section class="hud-panel">
-      <p class="game-desc">
-        你是名穿梭於全臺三千多家 7-Eleven的宅配員，
-        請根據配送單上的資訊，<br>選出正確的地址並點擊貨車，
-        把包裹準時送達指定的門市！
-      </p>
-    </section>
+      <!-- 浮空旁白字（打字機效果） -->
+      <section class="hud-panel">
+        <p class="game-desc" id="startDesc"></p>
+      </section>
 
-    <!-- 遊戲開始按鈕 -->
-    <button id="startBtn" class="start-cta" aria-label="開始遊戲" title="開始遊戲">
-      ▶ ▶ ▶
-    </button>
-  </main>
+      <!-- 點擊任意處開始提示字 -->
+      <div id="startPrompt" class="start-prompt">
+        點擊任意處開始
+      </div>
+
+    </div>
+  </div>
 
   <script>
-    // 遊戲開始函數
+    // ====== 遊戲畫面動態縮放邏輯 ======
+    function resizeGame() {
+      const board = document.getElementById("game-board");
+      const targetW = 1440;
+      const targetH = 900;
+      const winW = window.innerWidth;
+      const winH = window.innerHeight;
+      
+      const scale = Math.min(winW / targetW, winH / targetH);
+      
+      board.style.transform = `translate(-50%, -50%) scale(${scale})`;
+      board.style.left = "50%";
+      board.style.top = "50%";
+      board.style.position = "absolute";
+    }
+
+    window.addEventListener("resize", resizeGame);
+    window.addEventListener("DOMContentLoaded", resizeGame);
+
+    const fullText = "你是穿梭在全臺的宅配員，請根據送貨單上的資訊，<br>選出對應的地址，把包裹送到正確的門市！";
+    let typeFinished = false;
+
+    // 打字機特效 (支援 HTML 標籤如 <br> 的字字輸出，防止打字時露出原始碼)
+    function runTypewriter(element, text, speed = 40) {
+      let i = 0;
+      element.innerHTML = "";
+      element.classList.add("typewriter-cursor"); // 開始打字，加入游標
+      function type() {
+        if (i < text.length) {
+          // 若遇到 HTML 標籤起點，一次性加載完畢，防止打字機露出原始碼
+          if (text.charAt(i) === '<') {
+            let tagClose = text.indexOf('>', i);
+            if (tagClose !== -1) {
+              element.innerHTML += text.slice(i, tagClose + 1);
+              i = tagClose + 1;
+            } else {
+              element.innerHTML += text.charAt(i);
+              i++;
+            }
+          } else {
+            element.innerHTML += text.charAt(i);
+            i++;
+          }
+          setTimeout(type, speed);
+        } else {
+          typeFinished = true;
+          element.classList.remove("typewriter-cursor"); // 打字完成，移除游標
+          const prompt = document.getElementById("startPrompt");
+          prompt.style.opacity = "1";
+        }
+      }
+      type();
+    }
+
+    // 遊戲開始跳轉邏輯 (點擊全螢幕/任意處)
+    let isTransitioning = false;
     const startGame = () => {
-      const btn = document.getElementById("startBtn");
+      if (isTransitioning) return;
+      isTransitioning = true;
       
-      // 添加點擊動畫效果
-      btn.style.transform = "scale(0.95)";
-      btn.style.transition = "transform 0.1s ease";
+      const board = document.getElementById("game-board");
+      board.style.transition = "opacity 0.4s ease";
+      board.style.opacity = "0";
       
-      // 延遲跳轉，讓動畫效果完成
       setTimeout(() => {
         window.location.href = "game.html";
-      }, 150);
+      }, 400);
     };
 
-    // 事件監聽器
-    document.getElementById("startBtn").addEventListener("click", startGame);
+    // 監聽整個遊戲板的點擊
+    document.getElementById("game-board").addEventListener("click", startGame);
     
     // 鍵盤支援
     window.addEventListener("keydown", (e) => {
@@ -52,18 +110,18 @@
       }
     });
 
-    // 頁面載入完成後的初始化
+    // 頁面載入完成後啟動打字機與指標手勢
     document.addEventListener("DOMContentLoaded", () => {
-      // 添加按鈕載入動畫
-      const btn = document.getElementById("startBtn");
-      btn.style.opacity = "0";
-      btn.style.transform = "translateY(20px)";
+      // 設置滑鼠游標為 pointer 代表可點擊
+      document.getElementById("game-board").style.cursor = "pointer";
+      
+      const descEl = document.getElementById("startDesc");
+      const prompt = document.getElementById("startPrompt");
+      prompt.style.opacity = "0"; // 初始打字時先隱藏
       
       setTimeout(() => {
-        btn.style.transition = "all 0.6s cubic-bezier(0.4, 0, 0.2, 1)";
-        btn.style.opacity = "1";
-        btn.style.transform = "translateY(0)";
-      }, 300);
+        runTypewriter(descEl, fullText, 80);
+      }, 400);
     });
   </script>
 </body>

@@ -148,6 +148,7 @@
     const card = $("card" + i);
     card.innerHTML = `
       <div class="ticket">
+        <img class="logo" src="picture/logo.webp" alt="" />
         <p class="place" id="place${i}"></p>
         <p class="address" id="addr${i}"></p>
       </div>

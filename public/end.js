@@ -18,7 +18,9 @@
 
   // ====== 結局演出 ======
   const ending = L.pickEnding(result);
-  $("endArt").src = `picture/${ending}.webp`;
+  $("endTall").srcset = `picture/${ending}-tall.svg`;
+  $("endMid").srcset = `picture/${ending}-mid.svg`;
+  $("endArt").src = `picture/${ending}-wide.svg`;
   typewriter($("story"), TEXT[ending], 60, () => {
     $("prompt").hidden = false;
   });

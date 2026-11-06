@@ -7,14 +7,16 @@
   <link rel="icon" href="data:," />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500;700;900&family=Outfit:wght@700;800&display=swap" />
-  <link rel="stylesheet" href="style.css?v=11" />
+  <link rel="stylesheet" href="style.css?v=17" />
 </head>
 <body>
   <main class="scene ending" id="ending">
-    <div class="ending-art">
-      <img class="art" id="endArt" width="1920" height="1080" alt="" />
-      <p class="story" id="story"></p>
-    </div>
+    <picture class="end-bg">
+      <source id="endTall" media="(max-aspect-ratio: 4/5)" />
+      <source id="endMid" media="(max-aspect-ratio: 3/2)" />
+      <img id="endArt" alt="" />
+    </picture>
+    <p class="story" id="story"></p>
     <p class="start-prompt" id="prompt" hidden>點擊任意處查看成績</p>
   </main>
 

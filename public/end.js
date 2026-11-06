@@ -40,12 +40,6 @@
       parts.push(result.isNewRecord ? "刷新個人最佳！" : `個人最佳 ${result.bestScore} 分`);
       return parts.join("・");
     }
-    if (mode.seconds) {
-      const key = `best-${result.mode}`;
-      const best = Store.get(key, 0);
-      if (result.score > best) Store.set(key, result.score);
-      return result.score > best ? "刷新個人最佳！" : `個人最佳 ${best} 分`;
-    }
     return mode.label;
   }
   $("note").textContent = noteText();

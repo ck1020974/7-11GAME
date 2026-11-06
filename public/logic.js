@@ -10,7 +10,6 @@
 
   const MODES = {
     standard: { label: "校內競賽", seconds: 180, ranked: true },
-    challenge: { label: "限時衝刺", seconds: 120, wrongPenalty: 5 },
     practice: { label: "練習模式", sets: 10 },
     review: { label: "錯題練習" },
   };

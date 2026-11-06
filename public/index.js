@@ -1,7 +1,7 @@
 (function () {
   const $ = (id) => document.getElementById(id);
 
-  typewriter($("story"), "你是穿梭全臺的宅配員。\n看懂送貨單上的地名，判斷它的行政層級，把包裹準時送達！");
+  typewriter($("story"), "全臺爆單！分清行政層級，把包裹準時送到！");
 
   const openBoard = setupBoard();
   $("boardBtn").addEventListener("click", openBoard);

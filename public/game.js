@@ -65,7 +65,6 @@
           setNo: log.sets + 1,
           next: finished ? null : toPackages(),
           finished,
-          penaltyMs: !r.allCorrect && mode.wrongPenalty ? mode.wrongPenalty * 1000 : 0,
         };
       },
       async finish() {
@@ -256,10 +255,6 @@
     }
     renderCombo();
     if (res.remainingMs !== undefined) state.timeLeftMs = res.remainingMs;
-    if (res.penaltyMs) {
-      state.timeLeftMs = Math.max(0, state.timeLeftMs - res.penaltyMs);
-      renderTime();
-    }
 
     if (res.allCorrect) {
       sound.good();

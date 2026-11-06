@@ -301,7 +301,7 @@ body::before {
 .story {
   width: 100%;
   max-width: 820px;
-  min-height: 3.6em;
+  min-height: calc(3.2em + 20px); /* 先留好兩行高度，打字時版面不跳動 */
   margin: 0;
   padding: 10px 16px;
   border-radius: 12px;
@@ -316,33 +316,15 @@ body::before {
   overflow-wrap: anywhere; /* 極窄螢幕的保險，避免文字超出框外 */
 }
 @media (max-width: 759px) {
-  .story { font-size: 15px; }
+  .story { min-height: calc(4.8em + 20px); font-size: 15px; }
 }
 .typewriter-cursor::after { content: "|"; margin-left: 2px; color: #d92c3f; animation: cursor 0.8s steps(2, start) infinite; }
 
-/* 起始頁：一句開場台詞＋兩個模式＋榮譽榜 */
-.opening {
-  width: 100%;
-  max-width: 640px;
-  min-height: 48px;
-  margin: 0;
-  padding: 10px 14px;
-  border-radius: 999px;
-  background: var(--paper);
-  box-shadow: 0 2px 8px rgba(30, 39, 46, 0.18);
-  color: #173b76;
-  font-size: clamp(12px, 4vw, 21px);
-  font-weight: 900;
-  line-height: 28px;
-  text-align: center;
-  white-space: nowrap;
-}
-.menu { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; max-width: 640px; }
-.menu-btn { min-height: 64px; font-size: 22px; font-weight: 900; letter-spacing: 1px; }
-.menu-board { grid-column: 1 / -1; gap: 6px; font-weight: 900; letter-spacing: 1px; }
+/* 起始頁：三顆按鈕同一排 */
+.menu { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; max-width: 820px; }
+.menu-btn { gap: 6px; min-height: 60px; padding: 6px 4px; font-size: clamp(16px, 5vw, 22px); font-weight: 900; }
 @media (max-height: 520px) {
-  .menu { grid-template-columns: repeat(3, 1fr); }
-  .menu-btn, .menu-board { grid-column: auto; min-height: 50px; font-size: 18px; }
+  .menu-btn { min-height: 50px; font-size: 18px; }
 }
 
 /* 結局頁：整頁插圖＋旁白，點一下才開成績視窗 */

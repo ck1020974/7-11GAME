@@ -1,0 +1,14 @@
+{
+  "name": "delivery-game",
+  "version": "2.0.0",
+  "private": true,
+  "description": "行政區宅配大挑戰（公民科競賽遊戲，Cloudflare Workers + D1）",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "node --test \"test/*.test.js\""
+  },
+  "devDependencies": {
+    "wrangler": "^4.45.0"
+  }
+}

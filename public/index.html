@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="判斷全臺門市所在的行政層級，把包裹準時送達的公民科競賽小遊戲。" />
+  <title>行政區宅配大挑戰</title>
+  <link rel="icon" href="data:," />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500;700;900&family=Outfit:wght@700;800&display=swap" />
+  <link rel="stylesheet" href="style.css?v=7" />
+</head>
+<body>
+  <main class="scene">
+    <h1 class="sr-only">行政區宅配大挑戰</h1>
+    <img class="art" src="picture/start.webp" width="1920" height="1080" alt="兩位宅配員從超商門口搬著包裹走向貨車" />
+    <p class="story" id="story"></p>
+    <nav class="mode-list" aria-label="選擇遊戲模式">
+      <button class="gbtn gbtn-primary mode" id="rankedBtn" type="button"><b>校內競賽</b><span>3 分鐘，登入學號上榜</span></button>
+      <a class="gbtn mode" href="game.html?mode=challenge"><b>限時衝刺</b><span>2 分鐘，答錯扣 5 秒</span></a>
+      <a class="gbtn mode" href="game.html?mode=practice"><b>練習模式</b><span>10 組，不計時</span></a>
+    </nav>
+    <button class="link-btn" id="boardBtn" type="button">看榮譽榜</button>
+  </main>
+
+  <dialog id="loginDialog" class="modal" aria-labelledby="loginTitle">
+    <button id="loginClose" class="round-btn modal-close" type="button" aria-label="關閉">✕</button>
+    <h2 id="loginTitle">校內競賽</h2>
+    <form id="loginForm">
+      <label class="field-label" for="studentId">學號</label>
+      <input id="studentId" class="field" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="例如 LJ14001" required />
+      <p class="form-error" id="loginError" role="alert"></p>
+      <button class="gbtn gbtn-primary modal-action" id="loginSubmit" type="submit">開始比賽</button>
+    </form>
+  </dialog>
+
+  <dialog id="boardDialog" class="modal" aria-labelledby="boardTitle">
+    <button id="boardClose" class="round-btn modal-close" type="button" aria-label="關閉榮譽榜">✕</button>
+    <h2 id="boardTitle">榮譽榜</h2>
+    <select id="boardClass" class="field board-filter" aria-label="選擇班級"></select>
+    <p class="board-note" id="boardNote"></p>
+    <ol class="board" id="boardList"></ol>
+  </dialog>
+
+  <script src="ui.js"></script>
+  <script src="index.js"></script>
+</body>
+</html>

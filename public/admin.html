@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>教師後台｜行政區宅配大挑戰</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin">
+  <!-- 登入 -->
+  <section class="screen" id="a-login">
+    <div class="login-wrap">
+      <h1 class="admin-title">教師後台</h1>
+      <form class="panel login-panel" id="a-login-form">
+        <label for="a-password">後台密碼</label>
+        <input id="a-password" type="password" autocomplete="current-password" required>
+        <p class="form-error" id="a-login-error" role="alert"></p>
+        <button class="btn btn-primary" type="submit">登入</button>
+      </form>
+      <p class="hint-link"><a href="/">回到遊戲</a></p>
+    </div>
+  </section>
+
+  <!-- 主畫面 -->
+  <section class="screen" id="a-main">
+    <div class="a-wrap">
+      <header class="a-head">
+        <h1 class="admin-title">教師後台</h1>
+        <div class="a-head-actions">
+          <label class="a-class">班級
+            <select id="a-class"><option value="">全部班級</option></select>
+          </label>
+          <button class="btn btn-ghost" id="a-logout" type="button">登出</button>
+        </div>
+      </header>
+
+      <dl class="a-overview" id="a-overview">
+        <div><dt>學生人數</dt><dd data-k="students">0</dd></div>
+        <div><dt>玩過的學生</dt><dd data-k="players">0</dd></div>
+        <div><dt>總遊玩次數</dt><dd data-k="sessions">0</dd></div>
+        <div><dt>總完成組數</dt><dd data-k="sets">0</dd></div>
+      </dl>
+
+      <nav class="a-tabs" role="tablist">
+        <button role="tab" data-tab="students" aria-selected="true">學生成績</button>
+        <button role="tab" data-tab="import" aria-selected="false">匯入名單</button>
+        <button role="tab" data-tab="export" aria-selected="false">匯出與清除</button>
+      </nav>
+
+      <!-- 學生成績 -->
+      <div class="a-tab" id="tab-students">
+        <div class="a-toolbar">
+          <input type="search" id="s-search" placeholder="搜尋學號或姓名" aria-label="搜尋學生">
+          <label class="a-check"><input type="checkbox" id="s-played"> 只顯示玩過的學生</label>
+        </div>
+        <div class="table-wrap">
+          <table class="a-table" id="s-table">
+            <thead><tr>
+              <th data-sort="className">班級</th>
+              <th data-sort="seatNo" class="num">座號</th>
+              <th data-sort="studentId">學號</th>
+              <th data-sort="name">姓名</th>
+              <th data-sort="bestScore" class="num">最高分</th>
+              <th data-sort="plays" class="num">遊玩次數</th>
+              <th data-sort="accuracy" class="num">正確率</th>
+              <th data-sort="sets" class="num">完成組數</th>
+              <th data-sort="bestStreak" class="num">最高連對</th>
+              <th data-sort="lastPlayed">最近遊玩</th>
+            </tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <p class="a-note">點一下學生可以查看他每一局的成績。只有「校內競賽」會記錄，限時衝刺與練習模式不計入。</p>
+      </div>
+
+      <!-- 匯入 -->
+      <div class="a-tab" id="tab-import" hidden>
+        <form class="panel" id="imp-students">
+          <h2>學生名單</h2>
+          <p>欄位：<b>學號、姓名、班級</b>（座號可省略）。學號已存在的會更新姓名與班級。</p>
+          <input type="file" accept=".csv,.txt,text/csv" required>
+          <label class="a-check"><input type="checkbox" name="deactivateMissing"> 停用不在這份名單裡的學生（例如畢業生）</label>
+          <div class="a-row">
+            <button class="btn btn-primary" type="submit">匯入名單</button>
+            <a class="a-link" href="/api/admin/template/students.csv">下載範本</a>
+          </div>
+          <div class="imp-result" aria-live="polite"></div>
+        </form>
+        <p class="a-note">用 Excel 編輯後請「另存新檔 → CSV UTF-8（逗號分隔）」。一般 CSV（Big5）也能讀取。檔案有任何錯誤時，整份都不會匯入，請依提示修正後再試。</p>
+      </div>
+
+      <!-- 匯出 -->
+      <div class="a-tab" id="tab-export" hidden>
+        <div class="a-export">
+          <a class="panel a-exp" data-exp="students"><b>學生成績總表</b><span>每位學生的最高分、遊玩次數、正確率</span></a>
+          <a class="panel a-exp" data-exp="sessions"><b>每局成績</b><span>每一次遊玩的分數與正確率</span></a>
+          <a class="panel a-exp" data-exp="students-list"><b>學生名單</b><span>目前啟用中的學生（可直接再匯入）</span></a>
+        </div>
+        <p class="a-note">匯出的 CSV 可直接用 Excel 開啟。前兩項會套用上方選擇的班級。</p>
+
+        <form class="panel a-danger" id="reset-form">
+          <h2>清除成績（新學期或新一輪比賽）</h2>
+          <p>會刪除<b>所有</b>遊玩紀錄與榮譽榜；學生名單會保留。清除後無法復原，請先匯出需要的成績。</p>
+          <label for="reset-confirm">請輸入「確認清除」</label>
+          <div class="a-row">
+            <input id="reset-confirm" autocomplete="off" placeholder="確認清除">
+            <button class="btn btn-danger" type="submit">清除所有成績</button>
+          </div>
+          <div class="imp-result" aria-live="polite"></div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <dialog class="a-dialog" id="s-dialog">
+    <form method="dialog" class="a-dialog-head">
+      <h2 id="s-dialog-title"></h2>
+      <button class="btn btn-ghost" value="close">關閉</button>
+    </form>
+    <div class="table-wrap">
+      <table class="a-table">
+        <thead><tr><th>結束時間</th><th class="num">分數</th><th class="num">完成組數</th><th class="num">正確率</th><th class="num">最高連對</th><th></th></tr></thead>
+        <tbody id="s-dialog-body"></tbody>
+      </table>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="admin.js"></script>
+</body>
+</html>

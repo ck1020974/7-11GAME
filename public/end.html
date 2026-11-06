@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>行政區宅配大挑戰｜結局</title>
+  <link rel="icon" href="data:," />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500;700;900&family=Outfit:wght@700;800&display=swap" />
+  <link rel="stylesheet" href="style.css?v=7" />
+</head>
+<body>
+  <main class="scene ending" id="ending">
+    <div class="ending-art">
+      <img class="art" id="endArt" width="1920" height="1080" alt="" />
+      <p class="story" id="story"></p>
+    </div>
+    <p class="start-prompt" id="prompt" hidden>點擊任意處查看成績</p>
+  </main>
+
+  <dialog id="scoreDialog" class="modal" aria-labelledby="rank">
+    <button id="scoreClose" class="round-btn modal-close" type="button" aria-label="關閉成績">✕</button>
+    <h2 id="rank"></h2>
+    <p class="score-big" id="statScore"></p>
+    <p class="score-note" id="note"></p>
+    <dl class="stats">
+      <div><dt>正確率</dt><dd id="statRate"></dd></div>
+      <div><dt>完成組數</dt><dd id="statSets"></dd></div>
+      <div><dt>最長連對</dt><dd id="statStreak"></dd></div>
+    </dl>
+    <div class="actions">
+      <a id="again" class="gbtn gbtn-primary" href="index.html" autofocus>再送一輪</a>
+      <button id="reviewBtn" class="gbtn" type="button" hidden>查看解答</button>
+      <button id="boardBtn" class="gbtn" type="button" hidden>榮譽榜</button>
+      <a class="gbtn" href="index.html">回首頁</a>
+    </div>
+  </dialog>
+
+  <dialog id="reviewDialog" class="modal" aria-labelledby="reviewTitle">
+    <button id="reviewClose" class="round-btn modal-close" type="button" aria-label="關閉解答">✕</button>
+    <h2 id="reviewTitle">解答</h2>
+    <div id="reviewList"></div>
+    <a class="gbtn modal-action" href="game.html?mode=review">只練錯題</a>
+  </dialog>
+
+  <dialog id="boardDialog" class="modal" aria-labelledby="boardTitle">
+    <button id="boardClose" class="round-btn modal-close" type="button" aria-label="關閉榮譽榜">✕</button>
+    <h2 id="boardTitle">榮譽榜</h2>
+    <select id="boardClass" class="field board-filter" aria-label="選擇班級"></select>
+    <p class="board-note" id="boardNote"></p>
+    <ol class="board" id="boardList"></ol>
+  </dialog>
+
+  <script src="ui.js"></script>
+  <script src="logic.js"></script>
+  <script src="end.js"></script>
+</body>
+</html>

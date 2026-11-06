@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>行政區宅配大挑戰｜遊戲中</title>
+  <link rel="icon" href="data:," />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500;700;900&family=Outfit:wght@700;800&display=swap" />
+  <link rel="stylesheet" href="style.css?v=7" />
+</head>
+<body>
+  <main id="game">
+    <header class="hud">
+      <div class="info" id="time">
+        <span id="timeLabel">時間</span><strong id="timeValue">--:--</strong>
+      </div>
+      <div class="hud-center">
+        <span id="combo" class="combo" hidden></span>
+        <button id="mute" class="round-btn" type="button" aria-label="關閉音效">🔊</button>
+        <button id="quit" class="round-btn" type="button" aria-label="結束這一輪" hidden>✕</button>
+      </div>
+      <div class="info" id="score">
+        <span>分數</span><strong id="scoreValue">0</strong>
+        <span id="gain" class="gain" aria-hidden="true"></span>
+      </div>
+    </header>
+
+    <section class="cards" aria-label="本組兩件包裹">
+      <article class="card" id="card0"></article>
+      <article class="card" id="card1"></article>
+    </section>
+
+    <section class="stage" id="stage">
+      <img id="boy1" class="npc npc-left" src="picture/boy1.webp" alt="" />
+      <img id="boy3" class="npc npc-left hidden" src="picture/boy3.webp" alt="" />
+      <div class="stage-center">
+        <img id="truck" src="picture/truck.webp" alt="" />
+      </div>
+      <img id="girl1" class="npc npc-right" src="picture/girl1.webp" alt="" />
+      <img id="girl3" class="npc npc-right hidden" src="picture/girl3.webp" alt="" />
+    </section>
+
+    <p id="live" class="sr-only" aria-live="polite"></p>
+  </main>
+
+  <div id="overlay" class="overlay" hidden>
+    <p id="overlayText" class="overlay-text"></p>
+    <p id="overlayNote" class="overlay-note"></p>
+  </div>
+
+  <script src="ui.js"></script>
+  <script src="logic.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

@@ -132,6 +132,12 @@ test('測試帳號不上榜', async () => {
   assert.equal((await call('/api/leaderboard')).data.entries.length, 1);
 });
 
+test('測試帳號顯示設定的姓名與班級', async () => {
+  const r = (await call('/api/login', { studentId: 'lj14000' })).data;
+  assert.equal(r.student.name, '李祐馨');
+  assert.equal(r.student.className, '801');
+});
+
 test('班級篩選與同學排名', async () => {
   clock += 1000;
   const s = (await call('/api/game/start', { studentId: 'LJ14003' })).data;

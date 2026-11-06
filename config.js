@@ -11,7 +11,10 @@ module.exports = {
   },
 
   // 任何人都能用這些學號試玩：不必匯入名單、不上榮譽榜、不計入後台統計。
-  testAccounts: ['LJ140000'],
+  testAccounts: [
+    { id: 'LJ140000', name: '測試帳號', className: '測試' },
+    { id: 'LJ14000', name: '李祐馨', className: '801' },
+  ],
 
   leaderboard: {
     size: 10, // 榮譽榜顯示名次數

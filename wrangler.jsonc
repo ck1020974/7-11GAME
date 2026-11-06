@@ -16,7 +16,7 @@
       "binding": "DB",
       "database_name": "delivery-game-db",
       // 在 Cloudflare 後台建立 D1 資料庫後，把它的 Database ID 貼在這裡
-      "database_id": "REPLACE_WITH_D1_DATABASE_ID"
+      "database_id": "64a0203a-69cc-406c-9206-31a0a7271500"
     }
   ],
   "rules": [{ "type": "Text", "globs": ["**/*.sql"], "fallthrough": true }],

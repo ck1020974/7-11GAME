@@ -360,7 +360,7 @@ body.play::before { background: #a6dc6e url("picture/game-wide.svg") center bott
   padding: 10px 16px;
   border-radius: 12px;
   background: var(--paper);
-  font-size: clamp(16px, 2.2vw, 22px);
+  font-size: clamp(18px, 2.6vw, 26px);
   font-weight: 700;
   line-height: 1.6;
   text-align: center;
@@ -369,7 +369,7 @@ body.play::before { background: #a6dc6e url("picture/game-wide.svg") center bott
   word-break: keep-all;
   overflow-wrap: anywhere; /* 極窄螢幕的保險，避免文字超出框外 */
 }
-@media (max-width: 759px) {
+@media (max-width: 599px) {
   .story { font-size: 15px; }
 }
 @media (max-width: 480px) {

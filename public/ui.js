@@ -82,7 +82,7 @@ function setupBoard() {
 
 // 搭配 CSS 的 word-break: keep-all，讓中文只在標點後換行；窄螢幕改由瀏覽器決定行數。
 function formatStory(text) {
-  const narrow = matchMedia("(max-width: 759px)").matches;
+  const narrow = matchMedia("(max-width: 599px)").matches;
   return (narrow ? text.replace(/\n/g, "") : text)
     .replace(/——/g, "⁠——") // 破折號不可落在行首
     .replace(/[，。！]|——/g, "$&​");

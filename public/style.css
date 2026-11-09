@@ -413,14 +413,16 @@ body.home::before { background: #f2dcaa url("picture/start-wide.svg") center bot
   text-shadow: 0 0 2px #fff, 0 0 6px rgba(255, 255, 255, 0.9), 0 0 12px rgba(255, 255, 255, 0.7);
 }
 .start-prompt {
-  margin: 0;
-  color: #fff;
-  font-size: clamp(15px, 1.8vw, 20px);
+  margin: 10px 0 0;
+  color: #57606f;
+  font-size: clamp(13px, 1.4vw, 16px);
   font-weight: 700;
   letter-spacing: 2px;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95), 0 0 2px #000;
-  animation: blink 2s ease-in-out infinite;
+  text-shadow: 0 0 2px #fff, 0 0 6px rgba(255, 255, 255, 0.9);
+  /* 打字時先佔好位置（只是看不見），出現時旁白就不會被往上推 */
+  visibility: hidden;
 }
+.start-prompt.show { visibility: visible; animation: blink 2s ease-in-out infinite; }
 /* 成績視窗 */
 .score-big { margin: 0; color: #b86e00; font-family: "Outfit", sans-serif; font-size: 56px; font-weight: 800; line-height: 1.1; text-align: center; }
 .score-note { min-height: 1.5em; margin: 0 0 12px; color: #57606f; font-size: 14px; text-align: center; }

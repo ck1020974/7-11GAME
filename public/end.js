@@ -22,7 +22,7 @@
   $("endMid").srcset = `picture/${ending}-mid.svg`;
   $("endArt").src = `picture/${ending}-wide.svg`;
   typewriter($("story"), TEXT[ending], 60, () => {
-    $("prompt").hidden = false;
+    $("prompt").classList.add("show");
   });
 
   // ====== 成績視窗 ======

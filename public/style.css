@@ -386,7 +386,13 @@ body.home::before { background: #f2dcaa url("picture/start-wide.svg") center bot
   body.home::before { background-image: url("picture/start-tall.svg"); }
 }
 .home .scene { justify-content: flex-end; padding-bottom: 20px; }
-.home .story { box-shadow: 0 2px 10px rgba(30, 39, 46, 0.2); }
+/* 開頭頁同結局頁：不用旁白框，深色文字加淡色光暈 */
+.home .story {
+  background: none;
+  box-shadow: none;
+  color: #1e272e;
+  text-shadow: 0 0 2px #fff, 0 0 6px rgba(255, 255, 255, 0.9), 0 0 12px rgba(255, 255, 255, 0.7);
+}
 
 /* 三顆按鈕同一排 */
 .menu { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; max-width: 820px; }

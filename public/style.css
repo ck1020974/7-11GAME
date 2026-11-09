@@ -396,10 +396,16 @@ body.home::before { background: #f2dcaa url("picture/start-wide.svg") center bot
 }
 
 /* 結局頁：場景鋪滿整頁，旁白在下方，點一下才開成績視窗 */
-.ending { justify-content: flex-end; gap: 8px; padding-bottom: clamp(48px, 13dvh, 150px); cursor: pointer; }
+.ending { justify-content: flex-end; gap: 6px; padding-bottom: clamp(32px, 8dvh, 100px); cursor: pointer; }
 .end-bg { position: fixed; inset: 0; z-index: -1; }
-.end-bg img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center bottom; }
-.ending .story { box-shadow: 0 2px 10px rgba(30, 39, 46, 0.2); }
+.end-bg img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+/* 不用旁白框，文字直接壓在畫面上，用陰影確保看得清楚 */
+.ending .story {
+  background: none;
+  box-shadow: none;
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9), 0 0 3px #000;
+}
 .start-prompt {
   margin: 0;
   color: #fff;

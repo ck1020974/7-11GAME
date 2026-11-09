@@ -83,7 +83,7 @@
       const tr = document.createElement('tr');
       tr.className = `clickable${s.active ? '' : ' inactive'}`;
       tr.tabIndex = 0;
-      tr.append(td(s.className), td(s.seatNo ?? '', 'num'), td(s.studentId), td(s.active ? s.name : `${s.name}（停用）`),
+      tr.append(td(s.className), td(s.seatNo ?? '', 'num seat'), td(s.studentId), td(s.active ? s.name : `${s.name}（停用）`),
         td(s.plays ? s.bestScore.toLocaleString() : '—', 'num'), td(s.plays, 'num'),
         td(fmtPct(s.accuracy), `num ${accClass(s.accuracy)}`), td(s.sets, 'num'), td(s.bestStreak, 'num'), td(fmtTime(s.lastPlayed)));
       const open = () => openStudent(s);

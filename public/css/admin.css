@@ -59,6 +59,8 @@ body.admin { background-image: none; }
 .a-table th.sorted-asc::after { content: " ▲"; }
 .a-table th.sorted-desc::after { content: " ▼"; }
 .a-table .num { text-align: right; font-variant-numeric: tabular-nums; }
+/* 座號欄窄，置中比靠右更貼近班級欄 */
+.a-table .seat { width: 1%; padding-left: 8px; padding-right: 8px; text-align: center; }
 .a-table td.wrap { white-space: normal; min-width: 280px; max-width: 520px; }
 .a-table tbody tr:hover { background: #f7f9fc; }
 .a-table tr.clickable { cursor: pointer; }

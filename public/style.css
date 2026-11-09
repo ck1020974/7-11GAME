@@ -399,12 +399,12 @@ body.home::before { background: #f2dcaa url("picture/start-wide.svg") center bot
 .ending { justify-content: flex-end; gap: 6px; padding-bottom: clamp(32px, 8dvh, 100px); cursor: pointer; }
 .end-bg { position: fixed; inset: 0; z-index: -1; }
 .end-bg img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center top; }
-/* 不用旁白框，文字直接壓在畫面上，用陰影確保看得清楚 */
+/* 不用旁白框，深色文字直接壓在畫面上，外圈加淡色光暈確保看得清楚 */
 .ending .story {
   background: none;
   box-shadow: none;
-  color: #fff;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9), 0 0 3px #000;
+  color: #1e272e;
+  text-shadow: 0 0 2px #fff, 0 0 6px rgba(255, 255, 255, 0.9), 0 0 12px rgba(255, 255, 255, 0.7);
 }
 .start-prompt {
   margin: 0;
